@@ -1903,6 +1903,25 @@
         pageSnapTimer = window.setTimeout(settleDocumentScroll, 120);
       }
 
+      function handleLastPageLoop(event) {
+        if (event.deltaY <= 0 || pageSnapAnimating || body.classList.contains('is-gallery-open')) return;
+        const stops = getPageSnapStops();
+        const lastIndex = stops.length - 1;
+        const lastStop = stops[lastIndex] ?? 0;
+        const atLastPage = pageSnapIndex === lastIndex
+          && Math.abs(scrollY - lastStop) <= Math.max(16, innerHeight * .08);
+        if (!atLastPage) return;
+        event.preventDefault();
+        window.clearTimeout(pageSnapTimer);
+        returnHomeFromLastPage();
+      }
+
+      function returnHomeFromLastPage() {
+        releasePageThreeTail();
+        history.pushState(null, '', '#top');
+        snapPageTo(0);
+      }
+
       function navigatePageTarget(target) {
         const page = document.querySelector(target);
         if (!page) return null;
@@ -2319,6 +2338,8 @@
         scheduleRender();
         handleDocumentScroll();
       }, { passive: true });
+
+      addEventListener('wheel', handleLastPageLoop, { passive: false });
 
       addEventListener('resize', () => {
         updateScrollBounds();
