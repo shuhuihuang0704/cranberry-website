@@ -245,7 +245,7 @@
     .portfolio-repo-tags span { padding: 4px 7px; border: 1px solid rgba(196, 212, 125, .42); border-radius: 999px; color: #c4d47d; font-size: 10px; }
     .github-gallery-page { position: fixed; inset: 0; z-index: 1000; display: block; min-height: 100dvh; overflow: hidden; isolation: isolate; background: linear-gradient(135deg, #2d3021, #4c4531); opacity: 0; pointer-events: none; transform: translateY(28px) scale(.98); transition: opacity .45s ease, transform .6s cubic-bezier(.22,1,.36,1); }
     .resume-study.is-gallery-open .github-gallery-page { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
-    .github-gallery-head { position: absolute; top: clamp(28px, 5vh, 54px); left: 50%; z-index: 3; width: min(90vw, 600px); max-width: 600px; text-align: center; pointer-events: none; transform: translateX(-50%); }
+    .github-gallery-head { position: absolute; top: clamp(28px, 5vh, 54px); left: clamp(22px, 5vw, 80px); z-index: 3; width: min(42vw, 420px); max-width: 420px; text-align: left; pointer-events: none; transform: none; }
     .github-gallery-head small { display: block; margin-bottom: 10px; color: #c4d47d; font-size: 10px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
     .github-gallery-head h2 { margin: 0 0 8px; color: #f6eedc; font-family: Impact, Haettenschweiler, sans-serif; font-size: clamp(30px, 4.5vw, 60px); line-height: .88; letter-spacing: -.03em; text-shadow: 0 5px 18px rgba(8, 11, 7, .45); }
     .github-gallery-head p { margin: 0; color: rgba(244, 234, 212, .76); font-size: clamp(10px, .85vw, 13px); line-height: 1.6; }
@@ -265,7 +265,7 @@
     .github-gallery-tile a { justify-self: start; color: #c4d47d; font-size: clamp(10px, .75vw, 12px); text-decoration: none; }
     .github-gallery-tile a:hover { color: #f6eedc; }
     @media (max-width: 760px) {
-      .github-gallery-head { top: 24px; left: 50%; width: 84vw; transform: translateX(-50%); }
+      .github-gallery-head { top: 24px; left: 8vw; width: 84vw; transform: none; text-align: left; }
       .github-gallery-track { height: auto; min-height: 100svh; }
       .github-gallery-tile { width: min(68vw, 270px); }
     }
@@ -355,6 +355,48 @@
     .portfolio-reveal-cards:hover { transform: translate(-50%, -50%) scale(1.025); filter: drop-shadow(0 34px 42px rgba(27, 24, 14, .42)); }
     .portfolio-reveal-cards:focus-visible { outline: 3px solid #c4d47d; outline-offset: 10px; border-radius: 16px; }
     .portfolio-reveal-cards img { display: block; width: 100%; height: auto; border-radius: 14px; }
+    .ending-copy, .ending-signature { position: absolute; z-index: 4; }
+    .ending-copy { top: clamp(148px, 22vh, 230px); left: clamp(24px, 7.5vw, 132px); width: min(38vw, 500px); color: #f5f1e8; }
+    .ending-copy::before { content: ""; position: absolute; z-index: -1; top: -74px; left: -8vw; width: min(46vw, 640px); height: 480px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(24,29,21,.54), rgba(24,29,21,0) 72%); filter: blur(18px); opacity: .76; pointer-events: none; }
+    .ending-eyebrow, .ending-copy h2, .ending-subtitle, .ending-description, .ending-signature { opacity: 0; transform: translateY(20px); }
+    .ending-eyebrow { display: block; margin: 0; color: #c8d3a0; font-size: 11px; font-weight: 600; letter-spacing: .16em; line-height: 1.2; }
+    .ending-copy h2 { max-width: 8ch; margin: 24px 0 26px; color: #f5f1e8; font-family: Arial, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif; font-size: clamp(42px, 5vw, 76px); font-weight: 700; line-height: 1.05; letter-spacing: -.045em; text-wrap: balance; }
+    .ending-subtitle { margin: 0 0 13px; color: #f5f1e8; font-size: clamp(18px, 1.6vw, 24px); font-weight: 500; line-height: 1.5; }
+    .ending-description { display: grid; gap: 6px; max-width: 440px; margin: 0; }
+    .ending-description p { margin: 0; color: rgba(245,241,232,.82); font-size: 15px; line-height: 1.7; }
+    .ending-description p:last-child { color: rgba(245,241,232,.7); font-size: 14px; }
+    .ending-signature { bottom: clamp(34px, 7vh, 78px); left: clamp(24px, 7.5vw, 132px); display: inline-flex; align-items: center; gap: 12px; color: #c8d3a0; font-size: 11px; font-weight: 500; letter-spacing: .12em; line-height: 1.4; }
+    .ending-signature::before { content: ""; display: block; width: 36px; height: 1px; background: rgba(200,211,160,.72); }
+    .portfolio-reveal.is-tail-reveal .ending-eyebrow, .portfolio-reveal.is-ending-visible .ending-eyebrow { animation: ending-copy-in .68s cubic-bezier(.22,1,.36,1) .02s forwards; }
+    .portfolio-reveal.is-tail-reveal .ending-copy h2, .portfolio-reveal.is-ending-visible .ending-copy h2 { animation: ending-copy-in .72s cubic-bezier(.22,1,.36,1) .14s forwards; }
+    .portfolio-reveal.is-tail-reveal .ending-subtitle, .portfolio-reveal.is-ending-visible .ending-subtitle { animation: ending-copy-in .64s cubic-bezier(.22,1,.36,1) .28s forwards; }
+    .portfolio-reveal.is-tail-reveal .ending-description, .portfolio-reveal.is-ending-visible .ending-description { animation: ending-copy-in .64s cubic-bezier(.22,1,.36,1) .39s forwards; }
+    .portfolio-reveal.is-tail-reveal .ending-signature, .portfolio-reveal.is-ending-visible .ending-signature { animation: ending-copy-in .66s cubic-bezier(.22,1,.36,1) .56s forwards; }
+    @keyframes ending-copy-in { to { opacity: 1; transform: translateY(0); } }
+    .portfolio-reveal.is-video-tail-base .ending-copy, .portfolio-reveal.is-video-tail-base .ending-signature { pointer-events: none; }
+    .portfolio-reveal.is-video-tail-base .page-next { z-index: 6; }
+    @media (max-width: 1199px) {
+      .ending-copy { top: clamp(124px, 18vh, 190px); left: clamp(28px, 6vw, 72px); width: min(44vw, 430px); }
+      .ending-copy h2 { font-size: clamp(40px, 5.4vw, 64px); }
+    }
+    @media (max-width: 760px) {
+      .portfolio-page.portfolio-reveal { display: flex; min-height: 100svh; height: auto; min-height: 100svh; flex-direction: column; justify-content: flex-end; padding: 0; background-position: 62% top; background-size: auto 63svh; background-repeat: no-repeat; background-color: #292b22; }
+      .portfolio-reveal::after { inset: 0 0 37svh; background: linear-gradient(180deg, rgba(31,30,22,.06), rgba(31,30,22,.16) 62%, #292b22 100%); }
+      .ending-copy { position: relative; top: auto; left: auto; width: 100%; margin-top: 57svh; padding: 34px 8vw 22px; background: linear-gradient(180deg, rgba(41,43,34,0) 0%, #292b22 18%, #292b22 100%); }
+      .ending-copy::before { top: -100px; left: 0; width: 100%; height: 180px; background: linear-gradient(180deg, rgba(41,43,34,0), #292b22 80%); filter: none; opacity: 1; }
+      .ending-copy h2 { max-width: 9ch; margin: 18px 0 20px; font-size: clamp(40px, 12vw, 58px); }
+      .ending-subtitle { font-size: 18px; }
+      .ending-description p { font-size: 14px; }
+      .ending-description p:last-child { font-size: 13px; }
+      .ending-signature { position: relative; right: auto; bottom: auto; left: auto; width: 100%; padding: 4px 8vw 26px; background: #292b22; font-size: 10px; }
+      .ending-signature::before { width: 26px; }
+      .portfolio-reveal.is-video-tail-base { position: fixed; height: 100dvh; min-height: 100dvh; display: block; background: transparent !important; }
+      .portfolio-reveal.is-video-tail-base .ending-copy, .portfolio-reveal.is-video-tail-base .ending-signature { display: none; }
+      .portfolio-reveal.is-video-tail-base .page-next { display: inline-flex; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ending-eyebrow, .ending-copy h2, .ending-subtitle, .ending-description, .ending-signature { opacity: 1; transform: none; animation: none !important; }
+    }
     .folder-showcase { display: block; min-height: 100dvh; height: 100dvh; padding: clamp(42px, 8vh, 92px) clamp(26px, 7vw, 110px); background-color: #7b7158; }
     .folder-showcase::after { background: transparent; }
     .folder-showcase-copy { position: relative; z-index: 3; width: min(34vw, 440px); color: #f7ecd5; }
@@ -1016,6 +1058,83 @@
       .video-stage { transform: none; }
       .glow-cursor-canvas { display: none; }
     }
+    /* App Archive refinement: calm olive surface, editorial type, and stable coverflow geometry. */
+    .github-gallery-page {
+      --archive-bg: #292b22;
+      --archive-bg-soft: #33362b;
+      --archive-surface: #3a3d31;
+      --archive-text: #f4f1e7;
+      --archive-secondary: #aaa99b;
+      --archive-muted: #777b6c;
+      --archive-accent: #b8c58e;
+      --archive-border: rgba(244, 241, 231, .12);
+      --archive-border-hover: rgba(244, 241, 231, .24);
+      background:
+        radial-gradient(circle at 50% 44%, rgba(184, 197, 142, .08), transparent 34%),
+        linear-gradient(135deg, var(--archive-bg), var(--archive-bg-soft));
+      color: var(--archive-text);
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .42s ease, transform .52s cubic-bezier(.22,1,.36,1);
+    }
+    .resume-study.is-gallery-open .github-gallery-page { opacity: 1; transform: translateY(0); }
+    .github-gallery-page::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .16; background-image: radial-gradient(rgba(244,241,231,.18) .55px, transparent .55px); background-size: 5px 5px; mix-blend-mode: soft-light; }
+    .github-gallery-head { top: clamp(30px, 5vh, 52px); left: clamp(24px, 4vw, 64px); width: min(42vw, 460px); max-width: none; }
+    .github-gallery-head small { margin-bottom: 16px; color: var(--archive-accent); font-size: 11px; letter-spacing: .18em; }
+    .github-gallery-head h2 { margin-bottom: 14px; color: var(--archive-text); font-family: Arial, "Helvetica Neue", sans-serif; font-size: clamp(64px, 7vw, 112px); font-weight: 900; line-height: .86; letter-spacing: -.065em; text-shadow: 0 12px 32px rgba(0,0,0,.25); }
+    .github-gallery-head p { max-width: 260px; color: var(--archive-secondary); font-size: 13px; line-height: 1.55; }
+    .github-gallery-close { top: clamp(26px, 4vh, 48px); right: clamp(24px, 4vw, 64px); width: 44px; height: 44px; border-color: var(--archive-border-hover); background: transparent; color: var(--archive-text); font-size: 20px; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+    .github-gallery-close:hover { transform: translateY(-2px); border-color: var(--archive-accent); background: rgba(184,197,142,.12); }
+    .github-gallery-close:focus-visible { outline: 2px solid var(--archive-accent); outline-offset: 4px; }
+    .github-gallery-track { inset: 150px 0 124px; min-height: 0; overflow: visible; perspective: 1500px; }
+    .github-gallery-track::before { content: none; }
+    .github-gallery-tile { gap: 12px; width: min(30vw, 400px); padding: 14px 14px 18px; border: 1px solid var(--archive-border); border-radius: 24px; background: var(--archive-surface); box-shadow: 0 24px 70px rgba(0,0,0,.22), inset 0 1px 0 rgba(244,241,231,.05); cursor: pointer; outline: none; transition: border-color .22s ease, box-shadow .22s ease, opacity .18s linear, filter .18s linear; }
+    .github-gallery-tile:hover, .github-gallery-tile:focus-visible { border-color: var(--archive-border-hover); }
+    .github-gallery-tile.is-current { border-color: rgba(184,197,142,.42); box-shadow: 0 28px 70px rgba(0,0,0,.26), inset 0 1px 0 rgba(244,241,231,.08); }
+    .github-gallery-tile:focus-visible { outline: 2px solid var(--archive-accent); outline-offset: 6px; }
+    .github-gallery-media { border: 1px solid rgba(244,241,231,.08); border-radius: 16px; background: #272a22; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+    .github-gallery-media img { border-radius: 13px; filter: saturate(.92) contrast(1.02); transition: transform .28s cubic-bezier(.22,1,.36,1), filter .28s ease; }
+    .github-gallery-tile:hover .github-gallery-media img, .github-gallery-tile:focus-visible .github-gallery-media img { transform: scale(1.018); filter: saturate(1) contrast(1.03); }
+    .github-gallery-media::after { right: 12px; bottom: 12px; border: 1px solid rgba(244,241,231,.16); background: rgba(41,43,34,.84); color: var(--archive-secondary); }
+    .github-gallery-placeholder { color: var(--archive-text); }
+    .github-gallery-tile h3 { color: var(--archive-text); font-family: Arial, "Helvetica Neue", sans-serif; font-size: clamp(24px, 2.4vw, 34px); font-weight: 800; letter-spacing: -.045em; line-height: .98; text-shadow: none; }
+    .github-gallery-tile p { min-height: 36px; color: var(--archive-secondary); font-size: 14px; line-height: 1.55; }
+    .github-gallery-tile a { display: inline-flex; align-items: center; gap: 7px; color: var(--archive-accent); font-size: 12px; font-weight: 700; letter-spacing: .02em; transition: color .18s ease, transform .18s ease; }
+    .github-gallery-tile a::after { content: "↗"; transition: transform .18s ease; }
+    .github-gallery-tile a:hover, .github-gallery-tile a:focus-visible { color: var(--archive-text); }
+    .github-gallery-tile a:hover::after, .github-gallery-tile a:focus-visible::after { transform: translate(2px, -2px); }
+    .github-gallery-nav { position: absolute; right: clamp(24px, 4vw, 64px); bottom: clamp(24px, 4vh, 48px); left: clamp(24px, 4vw, 64px); z-index: 4; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; color: var(--archive-secondary); }
+    .github-gallery-counter { color: var(--archive-text); font-size: 12px; font-variant-numeric: tabular-nums; letter-spacing: .12em; }
+    .github-gallery-progress { display: flex; align-items: center; gap: 7px; }
+    .github-gallery-progress button { width: 28px; height: 2px; border: 0; padding: 0; background: rgba(244,241,231,.22); cursor: pointer; transition: width .24s ease, background .24s ease; }
+    .github-gallery-progress button:hover, .github-gallery-progress button:focus-visible { background: var(--archive-secondary); }
+    .github-gallery-progress button.is-active { width: 48px; background: var(--archive-accent); }
+    .github-gallery-actions { display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+    .github-gallery-hint { color: var(--archive-muted); font-size: 10px; letter-spacing: .13em; }
+    .github-gallery-actions button { border: 0; padding: 6px 0; background: transparent; color: var(--archive-text); font: inherit; font-size: 11px; font-weight: 800; letter-spacing: .12em; cursor: pointer; transition: color .18s ease, transform .18s ease; }
+    .github-gallery-actions button:hover, .github-gallery-actions button:focus-visible { color: var(--archive-accent); transform: translateY(-1px); }
+    .github-gallery-actions button:focus-visible, .github-gallery-progress button:focus-visible { outline: 2px solid var(--archive-accent); outline-offset: 5px; }
+    @media (max-width: 900px) {
+      .github-gallery-head { width: min(58vw, 410px); }
+      .github-gallery-tile { width: min(42vw, 340px); }
+      .github-gallery-hint { display: none; }
+    }
+    @media (max-width: 600px) {
+      .github-gallery-head { top: 28px; left: 24px; width: 72vw; }
+      .github-gallery-head h2 { font-size: clamp(58px, 17vw, 84px); }
+      .github-gallery-head p { font-size: 12px; }
+      .github-gallery-close { top: 26px; right: 24px; }
+      .github-gallery-track { inset: 164px 0 136px; }
+      .github-gallery-tile { width: min(76vw, 310px); padding: 10px 10px 14px; border-radius: 20px; }
+      .github-gallery-tile h3 { font-size: 25px; }
+      .github-gallery-tile p { min-height: 30px; font-size: 12px; }
+      .github-gallery-nav { grid-template-columns: auto 1fr; gap: 14px; }
+      .github-gallery-progress { justify-content: center; }
+      .github-gallery-actions { grid-column: 1 / -1; justify-content: space-between; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .github-gallery-page, .github-gallery-tile, .github-gallery-media img, .github-gallery-close, .github-gallery-actions button, .github-gallery-tile a, .github-gallery-tile a::after { transition: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -1088,7 +1207,7 @@
   <div class="page-transition" aria-hidden="true">
     <div id="pageTransitionComputerBackground" class="page-transition-background" aria-hidden="true"></div>
     <div id="pageTransitionFallingBackground" class="page-transition-background" aria-hidden="true"></div>
-    <video id="pageTransitionVideo" muted playsinline preload="auto" src="custom-transition.mp4"></video>
+    <video id="pageTransitionVideo" muted playsinline preload="auto" src="custom-transition-hd.mp4"></video>
     <div class="page-transition-character-layer" aria-hidden="true">
       <img id="pageTransitionPerson" src="person-sofa-cutout.png" alt="">
       <img id="pageTransitionFallingPerson" src="falling-foreground-cutout.png" alt="">
@@ -1204,11 +1323,30 @@
           <p data-gallery-status>正在读取仓库 README 图片…</p>
         </header>
         <div class="github-gallery-track" data-gallery-track data-circular-carousel tabindex="0" aria-label="项目 Circular Carousel，横向拖动或滚轮浏览项目" aria-live="polite"></div>
+        <footer class="github-gallery-nav" aria-label="项目导航">
+          <span class="github-gallery-counter" data-gallery-counter>01 / 05</span>
+          <div class="github-gallery-progress" data-gallery-progress role="tablist" aria-label="项目位置"></div>
+          <div class="github-gallery-actions">
+            <span class="github-gallery-hint">DRAG TO EXPLORE</span>
+            <button type="button" data-gallery-prev aria-label="上一个项目">← PREV</button>
+            <button type="button" data-gallery-next aria-label="下一个项目">NEXT →</button>
+          </div>
+        </footer>
       </div>
       <a class="page-next" data-page-transition href="#page-3" aria-label="进入作品集页面"><span>下一页 / 作品集</span><span class="page-next__arrow" aria-hidden="true">↓</span></a>
     </section>
     <section class="portfolio-page portfolio-reveal" id="page-3" data-page="3" aria-label="作品集">
       <div class="portfolio-reveal-backdrop" aria-hidden="true"><img src="page-2.jpg" alt=""></div>
+      <div class="ending-copy" aria-label="结束寄语">
+        <span class="ending-eyebrow">A LITTLE NOTE BEFORE YOU GO</span>
+        <h2>You made it<br>this far.</h2>
+        <p class="ending-subtitle">很高兴，你看到了这里。</p>
+        <div class="ending-description">
+          <p>Thanks for taking a little time to explore my world.</p>
+          <p>谢谢你，愿意花一点时间，走进我的小小世界。</p>
+        </div>
+      </div>
+      <div class="ending-signature">THE END. OR MAYBE JUST THE BEGINNING.</div>
       <a class="page-next page-next--restart" data-page-transition href="#top" aria-label="返回首页"><span>返回首页</span><span class="page-next__arrow" aria-hidden="true">↑</span></a>
     </section>
   </div>
@@ -1765,25 +1903,6 @@
         pageSnapTimer = window.setTimeout(settleDocumentScroll, 120);
       }
 
-      function handleLastPageLoop(event) {
-        if (event.deltaY <= 0 || pageSnapAnimating || body.classList.contains('is-gallery-open')) return;
-        const stops = getPageSnapStops();
-        const lastIndex = stops.length - 1;
-        const lastStop = stops[lastIndex] ?? 0;
-        const atLastPage = pageSnapIndex === lastIndex
-          && Math.abs(scrollY - lastStop) <= Math.max(16, innerHeight * .08);
-        if (!atLastPage) return;
-        event.preventDefault();
-        window.clearTimeout(pageSnapTimer);
-        returnHomeFromLastPage();
-      }
-
-      function returnHomeFromLastPage() {
-        releasePageThreeTail();
-        history.pushState(null, '', '#top');
-        snapPageTo(0);
-      }
-
       function navigatePageTarget(target) {
         const page = document.querySelector(target);
         if (!page) return null;
@@ -2201,8 +2320,6 @@
         handleDocumentScroll();
       }, { passive: true });
 
-      addEventListener('wheel', handleLastPageLoop, { passive: false });
-
       addEventListener('resize', () => {
         updateScrollBounds();
         scheduleRender();
@@ -2228,6 +2345,14 @@
           resumeFeature.classList.toggle('is-inview', entry.isIntersecting);
         }, { threshold: 0.25 });
         resumeObserver.observe(resumeFeature);
+      }
+
+      const endingSection = document.querySelector('.portfolio-reveal');
+      if (endingSection && 'IntersectionObserver' in window) {
+        const endingObserver = new IntersectionObserver(([entry]) => {
+          endingSection.classList.toggle('is-ending-visible', entry.isIntersecting);
+        }, { threshold: 0.32 });
+        endingObserver.observe(endingSection);
       }
 
       // OptionWheel-style timeline: one rAF loop eases the selected experience
@@ -2432,6 +2557,10 @@
         const galleryTitle = galleryPage?.querySelector('[data-gallery-title]');
         const galleryStatus = galleryPage?.querySelector('[data-gallery-status]');
         const galleryKicker = galleryPage?.querySelector('[data-gallery-kicker]');
+        const galleryCounter = galleryPage?.querySelector('[data-gallery-counter]');
+        const galleryProgress = galleryPage?.querySelector('[data-gallery-progress]');
+        const galleryPrev = galleryPage?.querySelector('[data-gallery-prev]');
+        const galleryNext = galleryPage?.querySelector('[data-gallery-next]');
         const githubOwner = 'shuhuihuang0704';
         const decodeBase64Utf8 = value => {
           try {
@@ -2468,24 +2597,44 @@
         let carouselPosition = 0;
         let carouselTarget = 0;
         let carouselFrame = 0;
+        const wrapCarouselDistance = (value, count) => {
+          if (!count) return 0;
+          const half = count / 2;
+          return ((value + half) % count + count) % count - half;
+        };
+        const getGalleryIndex = value => {
+          const count = galleryTrack?.querySelectorAll('.github-gallery-tile').length || 0;
+          if (!count) return 0;
+          return ((Math.round(value) % count) + count) % count;
+        };
+        const updateGalleryNav = () => {
+          const count = galleryTrack?.querySelectorAll('.github-gallery-tile').length || 0;
+          if (galleryCounter) galleryCounter.textContent = `${String(count ? getGalleryIndex(carouselTarget) + 1 : 0).padStart(2, '0')} / ${String(count).padStart(2, '0')}`;
+          galleryProgress?.querySelectorAll('button').forEach(button => {
+            const active = Number(button.dataset.galleryIndex) === getGalleryIndex(carouselTarget);
+            button.classList.toggle('is-active', active);
+            button.setAttribute('aria-selected', String(active));
+          });
+        };
         const updateCircularCarousel = () => {
           if (!galleryTrack) return;
           const tiles = [...galleryTrack.querySelectorAll('.github-gallery-tile')];
           const count = Math.max(tiles.length, 1);
-          const step = 360 / count;
-          const radius = Math.max(220, Math.min(360, galleryTrack.clientWidth * .19));
+          const sideGap = Math.min(430, Math.max(170, galleryTrack.clientWidth * (galleryTrack.clientWidth < 680 ? .44 : .26)));
           tiles.forEach((tile, index) => {
-            const angle = (index - carouselPosition) * step;
-            const radians = angle * Math.PI / 180;
-            const facing = (Math.cos(radians) + 1) / 2;
-            const opacity = Math.max(.16, .34 + facing * .66);
-            const scale = .9 + facing * .1;
-            tile.style.transform = `translate(-50%, -50%) rotateY(${angle.toFixed(2)}deg) translateZ(${radius.toFixed(1)}px) scale(${scale.toFixed(3)})`;
+            const distance = wrapCarouselDistance(index - carouselPosition, count);
+            const depth = Math.min(Math.abs(distance), 2);
+            const direction = distance === 0 ? 0 : Math.sign(distance);
+            const scale = 1 - depth * .15;
+            const opacity = 1 - depth * .34;
+            tile.style.transform = `translate(-50%, -50%) translate3d(${(distance * sideGap).toFixed(1)}px, 0, ${(90 - depth * 92).toFixed(1)}px) rotateY(${(-direction * Math.min(48, depth * 34)).toFixed(2)}deg) scale(${scale.toFixed(3)})`;
             tile.style.opacity = opacity.toFixed(3);
-            tile.style.filter = `blur(${((1 - facing) * 2.6).toFixed(2)}px) saturate(${(.72 + facing * .28).toFixed(2)})`;
-            tile.style.pointerEvents = facing > .08 ? 'auto' : 'none';
-            tile.style.zIndex = String(Math.round(100 + facing * 100));
+            tile.style.filter = `blur(${(depth * 1.1).toFixed(2)}px) saturate(${(1 - depth * .12).toFixed(2)})`;
+            tile.style.pointerEvents = depth < 1.45 ? 'auto' : 'none';
+            tile.style.zIndex = String(Math.round(200 - depth * 20));
+            tile.classList.toggle('is-current', Math.abs(distance) < .18);
           });
+          updateGalleryNav();
         };
         const runCarouselFrame = () => {
           carouselPosition += (carouselTarget - carouselPosition) * .14;
@@ -2497,15 +2646,30 @@
           carouselTarget += delta;
           if (!carouselFrame) carouselFrame = requestAnimationFrame(runCarouselFrame);
         };
+        const goToCarouselIndex = index => {
+          const count = galleryTrack?.querySelectorAll('.github-gallery-tile').length || 0;
+          if (!count) return;
+          const target = ((Number(index) % count) + count) % count;
+          const current = getGalleryIndex(carouselTarget);
+          let delta = target - current;
+          if (delta > count / 2) delta -= count;
+          if (delta < -count / 2) delta += count;
+          carouselTarget += delta;
+          if (!carouselFrame) carouselFrame = requestAnimationFrame(runCarouselFrame);
+        };
         const renderGithubGallery = async category => {
           if (!galleryTrack) return;
           const links = [...resumeStudy.querySelectorAll(`[data-github-list="${category}"] a[href*="github.com/${githubOwner}/"]`)];
           const repos = links.map(link => ({ name: link.href.split('/').filter(Boolean).pop(), title: link.textContent.split('·')[0].trim(), description: link.textContent.split('·').slice(1).join('·').trim(), url: link.href }));
-          galleryTrack.innerHTML = repos.length ? repos.map(repo => `<article class="github-gallery-tile" data-carousel-item="${repo.name}"><div class="github-gallery-media">${repoArtwork[repo.name] ? `<img src="${repoArtwork[repo.name]}" alt="${repo.title} 项目图">` : `<div class="github-gallery-placeholder">${repo.name.slice(0, 2).toUpperCase()}</div>`}</div><h3>${repo.title}</h3><p>${repo.description || 'GitHub 项目'}</p><a href="${repo.url}" target="_blank" rel="noopener">打开 GitHub 仓库 ↗</a></article>`).join('') : '<p>暂时没有找到该分类的仓库。</p>';
+          galleryTrack.innerHTML = repos.length ? repos.map((repo, index) => `<article class="github-gallery-tile" data-carousel-item="${repo.name}" data-carousel-index="${index}" data-repo-url="${repo.url}" tabindex="0" role="button" aria-label="${repo.title}，切换项目"><div class="github-gallery-media">${repoArtwork[repo.name] ? `<img src="${repoArtwork[repo.name]}" alt="${repo.title} 项目图">` : `<div class="github-gallery-placeholder">${repo.name.slice(0, 2).toUpperCase()}</div>`}</div><h3>${repo.title}</h3><p>${repo.description || 'GitHub 项目'}</p><a href="${repo.url}" target="_blank" rel="noopener">打开 GitHub 仓库 ↗</a></article>`).join('') : '<p>暂时没有找到该分类的仓库。</p>';
           carouselPosition = 0;
           carouselTarget = 0;
+          if (galleryProgress) {
+            galleryProgress.innerHTML = repos.map((repo, index) => `<button type="button" role="tab" data-gallery-index="${index}" aria-label="查看 ${repo.title}" aria-selected="${index === 0}"></button>`).join('');
+            galleryProgress.querySelectorAll('button').forEach(button => button.addEventListener('click', () => goToCarouselIndex(button.dataset.galleryIndex)));
+          }
           updateCircularCarousel();
-          galleryStatus.textContent = repos.length ? `共 ${repos.length} 个仓库，点击项目卡片可打开 GitHub。` : '没有读取到仓库清单。';
+          galleryStatus.textContent = repos.length ? `共 ${repos.length} 个仓库 · 中央卡片打开 GitHub` : '没有读取到仓库清单。';
           await Promise.all(repos.map(async (repo, index) => {
             if (repoArtwork[repo.name]) return;
             const imageUrl = await readmeImage(repo.name);
@@ -2536,10 +2700,14 @@
           galleryPage?.setAttribute('aria-hidden', 'true');
         };
         galleryPage?.querySelector('.github-gallery-close')?.addEventListener('click', closeGithubGallery);
+        const openGithubRepo = tile => {
+          const repoUrl = tile?.dataset.repoUrl;
+          if (repoUrl) window.open(repoUrl, '_blank', 'noopener,noreferrer');
+        };
         let galleryDrag = null;
         galleryTrack?.addEventListener('pointerdown', event => {
           if (event.target.closest('a, button, input, select, textarea')) return;
-          galleryDrag = { id: event.pointerId, x: event.clientX };
+          galleryDrag = { id: event.pointerId, x: event.clientX, startX: event.clientX, moved: false, tile: event.target.closest('.github-gallery-tile') };
           galleryTrack.setPointerCapture?.(event.pointerId);
           galleryTrack.classList.add('is-dragging');
         });
@@ -2547,13 +2715,21 @@
           if (!galleryDrag || galleryDrag.id !== event.pointerId) return;
           const delta = galleryDrag.x - event.clientX;
           galleryDrag.x = event.clientX;
+          if (Math.abs(event.clientX - galleryDrag.startX) > 8) galleryDrag.moved = true;
           nudgeCarousel(delta / 180);
         });
         const endGalleryDrag = event => {
           if (!galleryDrag || galleryDrag.id !== event.pointerId) return;
+          const tile = galleryDrag.tile;
+          const count = galleryTrack.querySelectorAll('.github-gallery-tile').length;
+          const tileDistance = tile ? wrapCarouselDistance(Number(tile.dataset.carouselIndex) - carouselPosition, count) : Infinity;
+          const shouldOpenRepo = !galleryDrag.moved && tile && Math.abs(tileDistance) < .45;
+          const shouldFocusTile = !galleryDrag.moved && tile && !shouldOpenRepo;
           galleryDrag = null;
           galleryTrack.classList.remove('is-dragging');
           galleryTrack.releasePointerCapture?.(event.pointerId);
+          if (shouldOpenRepo) openGithubRepo(tile);
+          if (shouldFocusTile) goToCarouselIndex(tile.dataset.carouselIndex);
         };
         galleryTrack?.addEventListener('pointerup', endGalleryDrag);
         galleryTrack?.addEventListener('pointercancel', endGalleryDrag);
@@ -2562,9 +2738,20 @@
           nudgeCarousel((Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX) / 420);
         }, { passive: false });
         galleryTrack?.addEventListener('keydown', event => {
+          const tile = event.target.closest?.('.github-gallery-tile');
+          if ((event.key === 'Enter' || event.key === ' ') && tile) {
+            event.preventDefault();
+            const count = galleryTrack.querySelectorAll('.github-gallery-tile').length;
+            const tileDistance = wrapCarouselDistance(Number(tile.dataset.carouselIndex) - carouselPosition, count);
+            if (Math.abs(tileDistance) < .45) openGithubRepo(tile);
+            else goToCarouselIndex(tile.dataset.carouselIndex);
+            return;
+          }
           if (event.key === 'ArrowDown' || event.key === 'ArrowRight') { event.preventDefault(); nudgeCarousel(.7); }
           if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') { event.preventDefault(); nudgeCarousel(-.7); }
         });
+        galleryPrev?.addEventListener('click', () => nudgeCarousel(-1));
+        galleryNext?.addEventListener('click', () => nudgeCarousel(1));
         window.addEventListener('resize', updateCircularCarousel, { passive: true });
         document.addEventListener('keydown', event => { if (event.key === 'Escape' && resumeStudy.classList.contains('is-gallery-open')) closeGithubGallery(); });
         spreadDeck?.addEventListener('pointerover', event => {
