@@ -1140,8 +1140,8 @@
 <body>
   <main id="top" class="experience" aria-label="滚动驱动的设计师作品集介绍">
     <div class="video-stage" aria-hidden="true">
-      <video id="mainVideo" class="video-layer" muted playsinline preload="auto" src="main-video.mp4"></video>
-      <video id="outroVideo" class="video-layer" loop muted playsinline preload="auto" src="main-video.mp4"></video>
+      <video id="mainVideo" class="video-layer" muted playsinline preload="metadata" src="main-video.mp4"></video>
+      <video id="outroVideo" class="video-layer" loop muted playsinline preload="metadata" src="main-video.mp4"></video>
     </div>
 
     <canvas id="glowCursor" class="glow-cursor-canvas" aria-hidden="true"></canvas>
@@ -1207,7 +1207,7 @@
   <div class="page-transition" aria-hidden="true">
     <div id="pageTransitionComputerBackground" class="page-transition-background" aria-hidden="true"></div>
     <div id="pageTransitionFallingBackground" class="page-transition-background" aria-hidden="true"></div>
-    <video id="pageTransitionVideo" muted playsinline preload="auto" src="custom-transition-hd.mp4"></video>
+    <video id="pageTransitionVideo" muted playsinline preload="none" data-src="custom-transition-web.mp4"></video>
     <div class="page-transition-character-layer" aria-hidden="true">
       <img id="pageTransitionPerson" src="person-sofa-cutout.png" alt="">
       <img id="pageTransitionFallingPerson" src="falling-foreground-cutout.png" alt="">
@@ -1409,6 +1409,7 @@
       const SCROLL_DRIVES_HERO_VIDEO = true;
       const PAGE_THREE_TAIL_HOLD = 0;
       const PAGE_THREE_REVEAL_DURATION = 850;
+      const PAGE_SNAP_DURATION = 620;
       let videoPlaying = false;
       let videoTailHold = false;
       let pageThreeReveal = false;
@@ -1418,6 +1419,7 @@
       let pageThreeDocumentTop = 0;
       let pageSnapIndex = 0;
       let pageSnapTimer = 0;
+      let pageSnapFrame = 0;
       let pageSnapUnlockFrame = 0;
       let pageSnapAnimating = false;
       let lastObservedScrollY = scrollY;
@@ -1778,6 +1780,38 @@
         return promise;
       }
 
+      let pageTransitionVideoLoadPromise = null;
+      function ensurePageTransitionVideoLoaded() {
+        const source = pageTransitionVideo.dataset.src;
+        if (!source) return Promise.reject(new Error('Transition video source is missing.'));
+        if (pageTransitionVideo.readyState >= 1 && pageTransitionVideo.currentSrc.endsWith(source)) {
+          return Promise.resolve();
+        }
+        if (pageTransitionVideoLoadPromise) return pageTransitionVideoLoadPromise;
+
+        pageTransitionVideoLoadPromise = new Promise((resolve, reject) => {
+          const cleanup = () => {
+            pageTransitionVideo.removeEventListener('loadedmetadata', handleLoadedMetadata);
+            pageTransitionVideo.removeEventListener('error', handleError);
+          };
+          const handleLoadedMetadata = () => {
+            cleanup();
+            resolve();
+          };
+          const handleError = () => {
+            cleanup();
+            reject(pageTransitionVideo.error || new Error('Transition video failed to load.'));
+          };
+
+          pageTransitionVideo.addEventListener('loadedmetadata', handleLoadedMetadata);
+          pageTransitionVideo.addEventListener('error', handleError);
+          pageTransitionVideo.src = source;
+          pageTransitionVideo.load();
+        });
+
+        return pageTransitionVideoLoadPromise;
+      }
+
       function startHomePlayback() {
         if (reduceMotion.matches || scrollY > 0 || mainVideo.error) {
           homeIntroPlaying = false;
@@ -1848,29 +1882,51 @@
         return index < 0 ? pageSnapIndex : index + 1;
       }
 
+      function cancelPageSnapAnimation() {
+        if (!pageSnapFrame) return;
+        cancelAnimationFrame(pageSnapFrame);
+        pageSnapFrame = 0;
+      }
+
+      function animatePageScroll(top) {
+        cancelPageSnapAnimation();
+        const start = scrollY;
+        const distance = top - start;
+        if (reduceMotion.matches || Math.abs(distance) <= 1) {
+          scrollTo(0, top);
+          pageSnapAnimating = false;
+          lastObservedScrollY = scrollY;
+          return;
+        }
+
+        const duration = clamp(PAGE_SNAP_DURATION * Math.max(1, Math.abs(distance) / Math.max(innerHeight, 1)), 460, 760);
+        const startedAt = performance.now();
+        const step = (now) => {
+          const progress = clamp((now - startedAt) / duration, 0, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          scrollTo(0, start + distance * eased);
+          if (progress < 1) {
+            pageSnapFrame = requestAnimationFrame(step);
+            return;
+          }
+          scrollTo(0, top);
+          pageSnapFrame = 0;
+          pageSnapAnimating = false;
+          lastObservedScrollY = scrollY;
+          scrollDirection = 0;
+        };
+        pageSnapFrame = requestAnimationFrame(step);
+      }
+
       function snapPageTo(nextIndex) {
         const stops = getPageSnapStops();
         pageSnapIndex = clamp(nextIndex, 0, stops.length - 1);
         const top = stops[pageSnapIndex] ?? 0;
         pageSnapAnimating = true;
         window.clearTimeout(pageSnapTimer);
+        cancelPageSnapAnimation();
         cancelAnimationFrame(pageSnapUnlockFrame);
-        scrollTo({ top, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-
-        const startedAt = performance.now();
-        const unlock = () => {
-          const reached = Math.abs(scrollY - top) <= 2;
-          const timedOut = performance.now() - startedAt > 950;
-          if (!reached && !timedOut) {
-            pageSnapUnlockFrame = requestAnimationFrame(unlock);
-            return;
-          }
-          if (!reached) scrollTo({ top, behavior: 'auto' });
-          pageSnapAnimating = false;
-          lastObservedScrollY = scrollY;
-          pageSnapUnlockFrame = 0;
-        };
-        pageSnapUnlockFrame = requestAnimationFrame(unlock);
+        animatePageScroll(top);
       }
 
       function settleDocumentScroll() {
@@ -2118,16 +2174,19 @@
         pageTransitionLocked = true;
         activeTransitionSegment = segment;
         setTransitionExitState(segment);
-        pageTransitionVideo.pause();
-        pageTransitionVideo.currentTime = segment.start;
-        updateTransitionAlignment();
-        pageTransition.classList.add('is-playing');
-        pageTransition.classList.remove('is-closing');
-        pageTransition.setAttribute('aria-hidden', 'false');
         setPageThreePhase(target === '#page-3' ? 'videoPlaying' : 'idle');
-        startTransitionFrameLoop();
-        const promise = pageTransitionVideo.play();
-        if (promise) promise.catch(finishPageTransition);
+        ensurePageTransitionVideoLoaded().then(() => {
+          if (!pageTransitionLocked || activeTransitionSegment !== segment) return;
+          pageTransitionVideo.pause();
+          pageTransitionVideo.currentTime = segment.start;
+          updateTransitionAlignment();
+          pageTransition.classList.add('is-playing');
+          pageTransition.classList.remove('is-closing');
+          pageTransition.setAttribute('aria-hidden', 'false');
+          startTransitionFrameLoop();
+          const promise = pageTransitionVideo.play();
+          if (promise) promise.catch(finishPageTransition);
+        }).catch(finishPageTransition);
       }
 
       pageNavLinks.forEach(link => link.addEventListener('click', runPageTransition));
@@ -2613,7 +2672,8 @@
           'what-to-eat': 'repo-what-to-eat.png',
           'exportflow-app': 'repo-exportflow.png',
           'quzhao-playpaw': 'repo-quzhao-playpaw.png',
-          'job-scout': 'repo-job-scout.png'
+          'job-scout': 'repo-job-scout.png',
+          'craberry-portfolio': 'repo-cranberry-portfolio.png'
         };
         let carouselPosition = 0;
         let carouselTarget = 0;
